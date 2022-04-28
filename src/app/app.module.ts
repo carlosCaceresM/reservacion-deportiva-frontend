@@ -1,4 +1,3 @@
-import { CanchasModule } from './feature/canchas/canchas.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -22,7 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     ProductoModule,
-    CanchasModule,
     CoreModule,
     BrowserAnimationsModule
   ],

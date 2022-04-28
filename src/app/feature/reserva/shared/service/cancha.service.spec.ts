@@ -1,10 +1,10 @@
-import { Cancha } from './../model/cancha';
+import { DtoCancha } from './../model/DtoCancha';
+import { CanchaService } from './cancha.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HttpService } from '@core/services/http.service';
 import { environment } from 'src/environments/environment';
 
-import { CanchaService } from './cancha.service';
 
 describe('CanchaService', () => {
   let httpMock: HttpTestingController;
@@ -20,13 +20,17 @@ describe('CanchaService', () => {
     service = TestBed.inject(CanchaService);
   });
 
+  it('Deberia crear el servicio', () => {
+    const canchaService: CanchaService = TestBed.inject(CanchaService);
+    expect(canchaService).toBeTruthy();
+  });
 
   it('deberia listar Canchas por Tipo', () => {
     const idTipoCancha: number = 1;
 
-    const dummyCanchas = [
-      new Cancha(1, 'cancha1','Futbol',60000),
-      new Cancha(2, 'cancha2','Futbol',60000)
+    const dummyCanchas: DtoCancha[] = [
+      { id: 1, nombre: 'cancha1', tipoCancha: 'Futbol', tafira: 60000 },
+      { id: 2, nombre: 'cancha2', tipoCancha: 'Futbol', tafira: 60000 }
     ];
     service.consultarPorTipoCancha(idTipoCancha).subscribe(canchas => {
       expect(canchas.length).toBe(2);
