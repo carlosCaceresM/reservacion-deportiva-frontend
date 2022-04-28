@@ -1,3 +1,4 @@
+import { CanchasModule } from './feature/canchas/canchas.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -7,6 +8,7 @@ import { HomeComponent } from '@home/home.component';
 import { ProductoModule } from '@producto/producto.module';
 import { CoreModule } from '@core/core.module';
 import { CookieService } from 'ngx-cookie-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -20,7 +22,9 @@ import { CookieService } from 'ngx-cookie-service';
     BrowserModule,
     AppRoutingModule,
     ProductoModule,
-    CoreModule
+    CanchasModule,
+    CoreModule,
+    BrowserAnimationsModule
   ],
   providers: [CookieService],
     bootstrap: [AppComponent],
