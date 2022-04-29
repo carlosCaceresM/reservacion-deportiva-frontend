@@ -1,1 +1,8 @@
-<p>reserva works!</p>
+<router-outlet></router-outlet>
+
+<div [hidden]="route.children.length !== 0">
+  <app-listar-reserva></app-listar-reserva>
+
+  <button mat-raised-button color="primary" class="registrar" routerLink="crear"> Registrar</button>
+</div>
+
