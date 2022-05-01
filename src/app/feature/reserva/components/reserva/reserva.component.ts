@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CrearReservaComponent } from '../crear-reserva/crear-reserva.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reserva',

@@ -1,14 +1,13 @@
-import { Reserva } from './../../shared/model/reserva';
+import { Component, Inject, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { DtoCancha, DtoTipoCancha } from './../../shared/model/DtoCancha';
-import { CanchaService } from './../../shared/service/cancha.service';
-import { Component, Inject, OnInit } from '@angular/core';
-
 import { ReservaService } from '../../shared/service/reserva.service';
-import * as moment from 'moment';
-import { switchMap } from 'rxjs/operators';
+import { CanchaService } from './../../shared/service/cancha.service';
+import { Reserva } from './../../shared/model/reserva';
+import { DtoCancha, DtoTipoCancha } from './../../shared/model/DtoCancha';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-crear-reserva',
@@ -44,17 +43,8 @@ export class CrearReservaComponent implements OnInit {
     this.cargarDatosEdicion();
   }
 
-
-  private initFormReserva() {
-    this.formReserva = new FormGroup({
-      id: new FormControl(0, Validators.required),
-      nombreUsuario: new FormControl('', Validators.required),
-      fecha: new FormControl('', Validators.required),
-      hora: new FormControl('', Validators.required),
-      horasReservadas: new FormControl(1, Validators.required),
-      tipoCancha: new FormControl(0, Validators.required),
-      idCancha: new FormControl(0, Validators.required)
-    });
+  public listaCanchasPorTipo(event) {
+    this.listaCanchas$ = this.canchaService.consultarPorTipoCancha(event);
   }
 
   public guardar() {
@@ -80,6 +70,18 @@ export class CrearReservaComponent implements OnInit {
     })
   }
 
+  private initFormReserva() {
+    this.formReserva = new FormGroup({
+      id: new FormControl(0, Validators.required),
+      nombreUsuario: new FormControl('', Validators.required),
+      fecha: new FormControl('', Validators.required),
+      hora: new FormControl('', Validators.required),
+      horasReservadas: new FormControl(1, Validators.required),
+      tipoCancha: new FormControl(0, Validators.required),
+      idCancha: new FormControl(0, Validators.required)
+    });
+  }
+
   private crearEntidad(): Reserva {
     const fecha: string = moment(`${this.formReserva.controls.fecha.value} ${this.formReserva.controls.hora.value}`)
       .format('YYYY-MM-DD HH:mm:ss');
@@ -92,12 +94,6 @@ export class CrearReservaComponent implements OnInit {
     const tafira: number = cancha.tafira;
 
     return new Reserva(id, nombreUsuario, fecha, horasReservadas, tafira, idCancha);
-  }
-
-
-
-  public listaCanchasPorTipo(event) {
-    this.listaCanchas$ = this.canchaService.consultarPorTipoCancha(event);
   }
 
   private cargarDatosEdicion() {

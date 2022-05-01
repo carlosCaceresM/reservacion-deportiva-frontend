@@ -1,13 +1,13 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+import { ReservaService } from '../../shared/service/reserva.service';
+import { DtoReserva, Reserva } from './../../shared/model/reserva';
 import { CrearReservaComponent } from './../crear-reserva/crear-reserva.component';
 import { ModalConfirmarComponent } from './../../../../core/components/modal-confirmar/modal-confirmar.component';
-import { DtoReserva, Reserva } from './../../shared/model/reserva';
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ReservaService } from '../../shared/service/reserva.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-listar-reserva',
@@ -56,9 +56,6 @@ export class ListarReservaComponent implements OnInit {
     })
   }
 
-
-
-
   private consultarReservas(reservas?: any) {
     this.reservaService.consultar().subscribe(datos => {
       reservas = datos;
@@ -74,7 +71,7 @@ export class ListarReservaComponent implements OnInit {
     });
   }
 
-  abrirModal(id?: number) {
+  public abrirModal(id?: number) {
     this.dialog.open(CrearReservaComponent, {
       disableClose: true,
       height: '700px',

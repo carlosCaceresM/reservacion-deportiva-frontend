@@ -5,6 +5,8 @@ import { ReservaRoutingModule } from './reserva-routing.module';
 import { ReservaComponent } from './components/reserva/reserva.component';
 import { ListarReservaComponent } from './components/listar-reserva/listar-reserva.component';
 
+import { ReservaService } from './shared/service/reserva.service';
+import { CanchaService } from './shared/service/cancha.service';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,16 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import {MatSelectModule} from '@angular/material/select';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { ReservaService } from './shared/service/reserva.service';
-import { CanchaService } from './shared/service/cancha.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
 import { CrearReservaComponent } from './components/crear-reserva/crear-reserva.component';
 import { CoreModule } from '@core/core.module';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -43,11 +41,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatInputModule,
     MatCardModule,
     MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatDialogModule
-
-
   ],
   providers: [ReservaService, CanchaService]
 })
