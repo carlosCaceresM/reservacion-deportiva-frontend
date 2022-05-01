@@ -1,9 +1,12 @@
-import { DtoReserva } from './../../shared/model/reserva';
+import { ModalConfirmarComponent } from './../../../../core/components/modal-confirmar/modal-confirmar.component';
+import { DtoReserva, Reserva } from './../../shared/model/reserva';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReservaService } from '../../shared/service/reserva.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-listar-reserva',
@@ -19,7 +22,8 @@ export class ListarReservaComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private reservaService: ReservaService
+    private reservaService: ReservaService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +31,30 @@ export class ListarReservaComponent implements OnInit {
     this.obtenerCambioReserva();
 
   }
+
+  public filtrar(valor: string) {
+    this.dataSource.filter = valor.trim().toLowerCase();
+  }
+
+  public eliminar(reserva: Reserva){
+    let dialogRef = this.dialog.open(ModalConfirmarComponent,{
+      disableClose: true,
+      height : "200px",
+      width: "300px",
+
+    });
+    dialogRef.afterClosed().subscribe(res =>{
+      if(res){
+        this.reservaService.eliminar(reserva).pipe(switchMap(()=>{
+          return this.reservaService.consultar();
+        }))
+        .subscribe(data =>{
+          this.reservaService.enviarCambioReserva(data);
+        })
+      }
+    })
+  }
+
 
   private consultarReservas(reservas?: any) {
     this.reservaService.consultar().subscribe(datos => {
@@ -41,10 +69,6 @@ export class ListarReservaComponent implements OnInit {
     this.reservaService.obtenerCambioReserva().subscribe((datos) => {
       this.consultarReservas(datos);
     });
-  }
-
-  public filtrar(valor: string) {
-    this.dataSource.filter = valor.trim().toLowerCase();
   }
 
 }

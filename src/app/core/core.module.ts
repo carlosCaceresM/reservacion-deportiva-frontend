@@ -11,12 +11,18 @@ import { HttpService } from './services/http.service';
 import { ManejadorError } from './interceptor/manejador-error';
 import { RouterModule } from '@angular/router';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { ModalConfirmarComponent } from './components/modal-confirmar/modal-confirmar.component';
+
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [ToolbarComponent, NavbarComponent],
+  declarations: [ToolbarComponent, NavbarComponent, ModalConfirmarComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule,
+    MatButtonModule
   ],
   exports: [ToolbarComponent, NavbarComponent],
   providers: [
