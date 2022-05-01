@@ -1,3 +1,4 @@
+
 import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SecurityGuard } from './guard/security.guard';
@@ -9,6 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpService } from './services/http.service';
 import { ManejadorError } from './interceptor/manejador-error';
 import { RouterModule } from '@angular/router';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [ToolbarComponent, NavbarComponent],
@@ -22,7 +24,8 @@ import { RouterModule } from '@angular/router';
     SecurityGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: ManejadorError }
+    { provide: ErrorHandler, useClass: ManejadorError },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ]
 })
 export class CoreModule { }

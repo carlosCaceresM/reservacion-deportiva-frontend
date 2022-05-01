@@ -1,0 +1,58 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Registrar</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <form [formGroup]="formReserva">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre Usuario</mat-label>
+        <input matInput placeholder="Nombre Usuario" formControlName="nombreUsuario">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>fecha</mat-label>
+        <input matInput type="date" placeholder="Horas Reservadas" formControlName="fecha">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora</mat-label>
+        <mat-select placeholder="Hora" appearance="outline" formControlName="hora">
+          <mat-option *ngFor="let h of horas" [value]=" h">
+            {{h}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad de Horas</mat-label>
+        <input matInput type="number" placeholder="Horas Reservadas" formControlName="horasReservadas">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>tipo Cancha</mat-label>
+        <mat-select placeholder="tipoCancha" appearance="outline" (selectionChange)="listaCanchasPorTipo($event.value)">
+          <mat-option *ngFor="let tc of listaTipoCanchas" [value]="tc.id">
+            {{tc.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cancha</mat-label>
+        <mat-select placeholder="Cancha" appearance="outline" formControlName="idCancha">
+          <mat-option *ngFor="let c of (listaCanchas$ | async)" [value]="c">
+            {{c.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="guardar()" [disabled]="formReserva.invalid">Guardar</button>
+    <button mat-button routerLink="/reserva" (click)="limpiar()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>

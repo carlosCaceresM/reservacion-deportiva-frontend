@@ -24,19 +24,26 @@ export class ListarReservaComponent implements OnInit {
 
   ngOnInit(): void {
     this.consultarReservas();
+    this.obtenerCambioReserva();
 
   }
 
-  private consultarReservas() {
-    this.reservaService.consultar().subscribe(reservas => {
+  private consultarReservas(reservas?: any) {
+    this.reservaService.consultar().subscribe(datos => {
+      reservas = datos;
       this.dataSource = new MatTableDataSource(reservas);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
+  private obtenerCambioReserva() {
+    this.reservaService.obtenerCambioReserva().subscribe((datos) => {
+      this.consultarReservas(datos);
+    });
+  }
 
-  filtrar(valor: string) {
+  public filtrar(valor: string) {
     this.dataSource.filter = valor.trim().toLowerCase();
   }
 

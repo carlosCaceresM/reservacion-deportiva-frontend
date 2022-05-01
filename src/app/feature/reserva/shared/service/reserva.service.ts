@@ -3,11 +3,14 @@ import { environment } from './../../../../../environments/environment.prod';
 import { Reserva } from '../model/reserva';
 import { HttpService } from '@core-service/http.service';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservaService {
+
+  private reservaCambio: Subject<DtoReserva[]> = new Subject<DtoReserva[]>();
 
   private path = `${environment.endpoint}/reservas`;
 
@@ -32,5 +35,13 @@ export class ReservaService {
 
   public eliminar(reserva: Reserva) {
     return this.http.doDelete<any>(`${this.path}/${reserva.id}`, this.http.optsName('eliminar reservas'));
+  }
+
+  public obtenerCambioReserva() {
+    return this.reservaCambio.asObservable();
+  }
+
+  public enviarCambioReserva(lista: DtoReserva[]) {
+    this.reservaCambio.next(lista);
   }
 }
