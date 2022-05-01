@@ -20,6 +20,12 @@ export class ReservaService {
     return this.http.doGet<DtoReserva[]>(`${this.path}`, this.http.optsName('Consultar reservas'));
   }
 
+  public consultarPorId( id: Number) {
+    return this.http.doGet<DtoReserva>(`${this.path}/${id}`,
+      this.http.optsName('Consultar Rerservas por id'));
+  }
+
+
   public consultarPorNombreUsuario(nombreUsuario: string, idCancha: Number) {
     return this.http.doGet<DtoReserva[]>(`${this.path}/nombre-usuario/${nombreUsuario}/cancha/${idCancha}`,
       this.http.optsName('Consultar Rerservas por nombre de usuario y id Cancha'));

@@ -21,6 +21,7 @@ import { ReservaService } from './shared/service/reserva.service';
 import { CanchaService } from './shared/service/cancha.service';
 import { CrearReservaComponent } from './components/crear-reserva/crear-reserva.component';
 import { CoreModule } from '@core/core.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { CoreModule } from '@core/core.module';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDialogModule
 
 
   ],

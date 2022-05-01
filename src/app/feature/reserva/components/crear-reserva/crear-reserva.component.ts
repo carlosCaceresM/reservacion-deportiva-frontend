@@ -1,14 +1,14 @@
+import { Reserva } from './../../shared/model/reserva';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DtoCancha, DtoTipoCancha } from './../../shared/model/DtoCancha';
 import { CanchaService } from './../../shared/service/cancha.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
-import { Reserva } from '../../shared/model/reserva';
 import { ReservaService } from '../../shared/service/reserva.service';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { switchMap } from 'rxjs/operators';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-crear-reserva',
@@ -33,17 +33,21 @@ export class CrearReservaComponent implements OnInit {
   constructor(
     private canchaService: CanchaService,
     private reservaService: ReservaService,
-    private router: Router,
+
+     private dialogRef: MatDialogRef<CrearReservaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.initFormReserva();
+    this.cargarDatosEdicion();
   }
 
 
   private initFormReserva() {
     this.formReserva = new FormGroup({
-
+      id: new FormControl(0, Validators.required),
       nombreUsuario: new FormControl('', Validators.required),
       fecha: new FormControl('', Validators.required),
       hora: new FormControl('', Validators.required),
@@ -55,29 +59,34 @@ export class CrearReservaComponent implements OnInit {
 
   public guardar() {
 
-    console.log(this.crearEntidad());
-
     this.reservaService.guardar(this.crearEntidad()).pipe(switchMap(() => {
       return this.reservaService.consultar();
-    })).subscribe(datos =>{
-      this.reservaService.enviarCambioReserva(datos)
-      console.log("parece que gaurdo");
-     this.limpiar();
+    })).subscribe(datos => {
+      this.reservaService.enviarCambioReserva(datos);
+      this.formReserva.reset();
+      this.dialogRef.close(true);
+
     })
-    this.router.navigate(['/reserva']);
+  }
+
+  public actualizar() {
+    this.reservaService.actualizar(this.crearEntidad()).pipe(switchMap(() => {
+      return this.reservaService.consultar();
+    })).subscribe(datos => {
+      this.reservaService.enviarCambioReserva(datos);
+      this.formReserva.reset();
+      this.dialogRef.close(true);
+
+    })
   }
 
   private crearEntidad(): Reserva {
-
-    const id: number = 0;
-
     const fecha: string = moment(`${this.formReserva.controls.fecha.value} ${this.formReserva.controls.hora.value}`)
       .format('YYYY-MM-DD HH:mm:ss');
 
-    console.log("esta es la puta fecha: " + fecha)
+    const id: number = this.formReserva.value['id'];;
     const cancha: DtoCancha = this.formReserva.value['idCancha'];
-    const nombreUsuario: string = this.formReserva.controls.nombreUsuario.value;
-
+    const nombreUsuario: string = this.formReserva.value['nombreUsuario'];
     const horasReservadas: number = this.formReserva.value['horasReservadas'];
     const idCancha: number = cancha.id;
     const tafira: number = cancha.tafira;
@@ -86,12 +95,28 @@ export class CrearReservaComponent implements OnInit {
   }
 
 
+
   public listaCanchasPorTipo(event) {
     this.listaCanchas$ = this.canchaService.consultarPorTipoCancha(event);
   }
 
-  public limpiar() {
-    this.formReserva.reset();
+  private cargarDatosEdicion() {
+    if (this.data.id != 0) {
+      this.reservaService.consultarPorId(this.data.id).subscribe(res => {
+        let fecha = moment(res.fecha).format('YYYY-MM-DD');
+        let hora = moment(res.fecha).format('HH:mm');
+
+        this.formReserva.setValue({
+          id: res.id,
+          nombreUsuario: res.nombreUsuario,
+          fecha: fecha,
+          hora: hora,
+          horasReservadas: res.horasReservadas,
+          tipoCancha: new FormControl(0, Validators.required),
+          idCancha: new FormControl(0, Validators.required)
+        });
+      });
+    }
   }
 }
 

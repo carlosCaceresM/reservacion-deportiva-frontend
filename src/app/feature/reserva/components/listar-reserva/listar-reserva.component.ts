@@ -1,3 +1,4 @@
+import { CrearReservaComponent } from './../crear-reserva/crear-reserva.component';
 import { ModalConfirmarComponent } from './../../../../core/components/modal-confirmar/modal-confirmar.component';
 import { DtoReserva, Reserva } from './../../shared/model/reserva';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -56,6 +57,8 @@ export class ListarReservaComponent implements OnInit {
   }
 
 
+
+
   private consultarReservas(reservas?: any) {
     this.reservaService.consultar().subscribe(datos => {
       reservas = datos;
@@ -69,6 +72,17 @@ export class ListarReservaComponent implements OnInit {
     this.reservaService.obtenerCambioReserva().subscribe((datos) => {
       this.consultarReservas(datos);
     });
+  }
+
+  abrirModal(id?: number) {
+    this.dialog.open(CrearReservaComponent, {
+      disableClose: true,
+      height: '700px',
+      width: '400px',
+      data: {
+        id: id
+      },
+    })
   }
 
 }

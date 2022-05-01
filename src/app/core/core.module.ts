@@ -10,7 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpService } from './services/http.service';
 import { ManejadorError } from './interceptor/manejador-error';
 import { RouterModule } from '@angular/router';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+
 import { ModalConfirmarComponent } from './components/modal-confirmar/modal-confirmar.component';
 
 import {MatDialogModule} from '@angular/material/dialog';
@@ -31,7 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: ErrorHandler, useClass: ManejadorError },
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
+
   ]
 })
 export class CoreModule { }
