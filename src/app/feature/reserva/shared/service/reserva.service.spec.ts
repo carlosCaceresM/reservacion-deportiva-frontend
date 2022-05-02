@@ -43,6 +43,27 @@ describe('ReservaService', () => {
     req.flush(listaReservas);
   });
 
+  it('deberia listar Reservas por id', () => {
+    const id = 1;
+
+
+    const reserva: DtoReserva =
+      {
+        id: 1, nombreUsuario: 'hiko',
+        fecha: '2022-04-30 20:22:33',
+        horasReservadas: 2,
+        valorPagar: 70000,
+        estado: true,
+        cancha: 'cancha 1'
+      };
+
+    service.consultarPorId(id).subscribe(reservas => {
+      expect(reservas).toEqual(reserva)
+    });
+    const req = httpMock.expectOne(`${apiEndpointReservas}/${id}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(reserva);
+  });
 
   it('deberia listar Reservas por nombre de usuario y id Cancha', () => {
     const nombreUsuario = 'Hiko';
@@ -103,7 +124,7 @@ describe('ReservaService', () => {
     req.event(new HttpResponse<any>());
   });
 
-  it('deberia eliminar un producto', () => {
+  it('deberia eliminar una Reseva', () => {
     const id = 1;
     let reserva = new Reserva(1, 'Hiko', '2022-07-12 18:52:23', 2, 60000, 1);
     service.eliminar(reserva).subscribe(respuesta => {
@@ -111,6 +132,17 @@ describe('ReservaService', () => {
     });
     const req = httpMock.expectOne(`${apiEndpointReservas}/${id}`);
     expect(req.request.method).toBe('DELETE');
+    req.event(new HttpResponse<any>());
+  });
+
+  it('deberia Cancelar una Reserva', () => {
+    const id = 1;
+    let reserva = new Reserva(1, 'Hiko', '2022-07-12 18:52:23', 2, 60000, 1);
+    service.cancelarReserva(reserva).subscribe(respuesta => {
+      expect(respuesta).toEqual(null);
+    });
+    const req = httpMock.expectOne(`${apiEndpointReservas}/cancelar/${id}`);
+    expect(req.request.method).toBe('PUT');
     req.event(new HttpResponse<any>());
   });
 });

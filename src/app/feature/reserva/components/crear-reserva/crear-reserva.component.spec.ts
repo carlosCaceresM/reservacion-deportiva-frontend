@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrearReservaComponent } from './crear-reserva.component';
+// import { CrearReservaComponent } from './crear-reserva.component';
 
-describe('CrearReservaComponent', () => {
-  let component: CrearReservaComponent;
-  let fixture: ComponentFixture<CrearReservaComponent>;
+// describe('CrearReservaComponent', () => {
+//   let component: CrearReservaComponent;
+//   let fixture: ComponentFixture<CrearReservaComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CrearReservaComponent ]
-    })
-    .compileComponents();
-  });
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       declarations: [ CrearReservaComponent ]
+//     })
+//     .compileComponents();
+//   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CrearReservaComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(CrearReservaComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });
