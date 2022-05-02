@@ -18,11 +18,11 @@ export class ReservaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  abrirModal(id?: number) {
+  public abrirModal(id?: number) {
     this.dialog.open(CrearReservaComponent, {
       disableClose: true,
-      height: '700px',
-      width: '400px',
+      height: '400px',
+      width: '500px',
       data: {
         id: id
       },

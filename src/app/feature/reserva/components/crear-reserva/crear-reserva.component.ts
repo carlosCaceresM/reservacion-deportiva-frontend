@@ -9,6 +9,10 @@ import { DtoCancha, DtoTipoCancha } from './../../shared/model/DtoCancha';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 
+const HORAS_MINIMAS_A_RESERVAR = 1;
+const HORAS_MAXIMAS_A_RESERVAR = 5;
+const HORA_INICIAL = '17:00';
+
 @Component({
   selector: 'app-crear-reserva',
   templateUrl: './crear-reserva.component.html',
@@ -22,18 +26,17 @@ export class CrearReservaComponent implements OnInit {
   ];
 
 
+
+  public fechaActual = moment();
   public horas: string[] = ['17:00', '18:00', '19:00', '20:00', '21:00'];
-
   public listaCanchas$: Observable<DtoCancha[]>;
-
   public formReserva: FormGroup;
-
 
   constructor(
     private canchaService: CanchaService,
     private reservaService: ReservaService,
 
-     private dialogRef: MatDialogRef<CrearReservaComponent>,
+    private dialogRef: MatDialogRef<CrearReservaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
     public dialog: MatDialog
   ) { }
@@ -71,25 +74,28 @@ export class CrearReservaComponent implements OnInit {
   }
 
   private initFormReserva() {
+    const fecha: string = this.fechaActual.format("YYYY-MM-DD");
     this.formReserva = new FormGroup({
       id: new FormControl(0, Validators.required),
       nombreUsuario: new FormControl('', Validators.required),
-      fecha: new FormControl('', Validators.required),
-      hora: new FormControl('', Validators.required),
-      horasReservadas: new FormControl(1, Validators.required),
-      tipoCancha: new FormControl(0, Validators.required),
-      idCancha: new FormControl(0, Validators.required)
+      fecha: new FormControl(fecha, Validators.required),
+      hora: new FormControl(HORA_INICIAL, Validators.required),
+      horasReservadas: new FormControl(HORAS_MINIMAS_A_RESERVAR,
+        [Validators.required, Validators.min(HORAS_MINIMAS_A_RESERVAR), Validators.max(HORAS_MAXIMAS_A_RESERVAR)]
+      ),
+      tipoCancha: new FormControl('',Validators.required),
+      idCancha: new FormControl('', Validators.required)
     });
   }
 
   private crearEntidad(): Reserva {
-    const fecha: string = moment(`${this.formReserva.controls.fecha.value} ${this.formReserva.controls.hora.value}`)
-      .format('YYYY-MM-DD HH:mm:ss');
 
     const id: number = this.formReserva.value['id'];;
     const cancha: DtoCancha = this.formReserva.value['idCancha'];
     const nombreUsuario: string = this.formReserva.value['nombreUsuario'];
     const horasReservadas: number = this.formReserva.value['horasReservadas'];
+    const fecha: string = moment(`${this.formReserva.controls.fecha.value} ${this.formReserva.controls.hora.value}`)
+    .format('YYYY-MM-DD HH:mm:ss');
     const idCancha: number = cancha.id;
     const tafira: number = cancha.tafira;
 

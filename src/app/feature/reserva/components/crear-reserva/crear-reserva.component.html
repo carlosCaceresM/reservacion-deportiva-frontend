@@ -23,8 +23,8 @@
     <mat-form-field appearance="outline">
       <mat-label>Hora</mat-label>
       <mat-select placeholder="Hora" type="time" appearance="outline" formControlName="hora">
-        <mat-option *ngFor="let h of horas" [value]=" h">
-          {{h}}
+        <mat-option *ngFor="let hora of horas" [value]=" hora">
+          {{hora}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -36,7 +36,8 @@
 
     <mat-form-field appearance="outline">
       <mat-label>tipo Cancha</mat-label>
-      <mat-select placeholder="tipoCancha" appearance="outline" (selectionChange)="listaCanchasPorTipo($event.value)">
+      <mat-select placeholder="tipoCancha" appearance="outline" (selectionChange)="listaCanchasPorTipo($event.value)"
+        formControlName="tipoCancha">
         <mat-option *ngFor="let tc of listaTipoCanchas" [value]="tc.id">
           {{tc.nombre}}
         </mat-option>

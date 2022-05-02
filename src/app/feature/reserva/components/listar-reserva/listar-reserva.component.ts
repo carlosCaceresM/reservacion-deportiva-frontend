@@ -56,6 +56,25 @@ export class ListarReservaComponent implements OnInit {
     })
   }
 
+  public cancelarReserva(reserva: Reserva){
+    let dialogRef = this.dialog.open(ModalConfirmarComponent,{
+      disableClose: true,
+      height : "200px",
+      width: "300px",
+
+    });
+    dialogRef.afterClosed().subscribe(res =>{
+      if(res){
+        this.reservaService.cancelarReserva(reserva).pipe(switchMap(()=>{
+          return this.reservaService.consultar();
+        }))
+        .subscribe(data =>{
+          this.reservaService.enviarCambioReserva(data);
+        })
+      }
+    })
+  }
+
   private consultarReservas(reservas?: any) {
     this.reservaService.consultar().subscribe(datos => {
       reservas = datos;
@@ -74,8 +93,8 @@ export class ListarReservaComponent implements OnInit {
   public abrirModal(id?: number) {
     this.dialog.open(CrearReservaComponent, {
       disableClose: true,
-      height: '700px',
-      width: '400px',
+      height: '400px',
+      width: '500px',
       data: {
         id: id
       },

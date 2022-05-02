@@ -1,9 +1,9 @@
-import { DtoReserva } from './../model/reserva';
-import { environment } from './../../../../../environments/environment.prod';
-import { Reserva } from '../model/reserva';
-import { HttpService } from '@core-service/http.service';
 import { Injectable } from '@angular/core';
+import { HttpService } from '@core-service/http.service';
 import { Subject } from 'rxjs';
+import { Reserva } from '../model/reserva';
+import { environment } from './../../../../../environments/environment.prod';
+import { DtoReserva } from './../model/reserva';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class ReservaService {
     return this.http.doGet<DtoReserva[]>(`${this.path}`, this.http.optsName('Consultar reservas'));
   }
 
-  public consultarPorId( id: Number) {
+  public consultarPorId(id: Number) {
     return this.http.doGet<DtoReserva>(`${this.path}/${id}`,
       this.http.optsName('Consultar Rerservas por id'));
   }
@@ -37,6 +37,10 @@ export class ReservaService {
 
   public actualizar(reserva: Reserva) {
     return this.http.doPut<Reserva, any>(`${this.path}/${reserva.id}`, reserva, this.http.optsName('actualizar reservas'));
+  }
+
+  public cancelarReserva(reserva: Reserva) {
+    return this.http.doPut<Reserva, any>(`${this.path}/cancelar/${reserva.id}`, reserva, this.http.optsName('Cancelar reservas'));
   }
 
   public eliminar(reserva: Reserva) {

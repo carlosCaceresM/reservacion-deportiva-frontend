@@ -1,6 +1,6 @@
 {
   "/reservacion-deportiva": {
-    "target": "http://localhost:8085",
+    "target": "http://localhost:8081",
     "logLevel": "debug"
   }
 
