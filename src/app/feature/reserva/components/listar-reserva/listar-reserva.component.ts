@@ -34,7 +34,7 @@ export class ListarReservaComponent implements OnInit {
   }
 
   public filtrar(valor: string) {
-    this.dataSource.filter = valor.trim().toLowerCase();
+    this.datos.filter = valor.trim().toLowerCase();
   }
 
   public eliminar(reserva: Reserva){
@@ -80,9 +80,9 @@ export class ListarReservaComponent implements OnInit {
   private consultarReservas(reservas?: any) {
     this.reservaService.consultar().subscribe(datos => {
       reservas = datos;
-      this.dataSource = new MatTableDataSource(reservas);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.datos = new MatTableDataSource(reservas);
+      this.datos.paginator = this.paginator;
+      this.datos.sort = this.sort;
     });
   }
 
