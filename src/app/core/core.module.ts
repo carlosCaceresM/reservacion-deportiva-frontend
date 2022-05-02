@@ -15,6 +15,7 @@ import { ModalConfirmarComponent } from './components/modal-confirmar/modal-conf
 
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [ToolbarComponent, NavbarComponent, ModalConfirmarComponent],
@@ -22,7 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     RouterModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   exports: [ToolbarComponent, NavbarComponent],
   providers: [

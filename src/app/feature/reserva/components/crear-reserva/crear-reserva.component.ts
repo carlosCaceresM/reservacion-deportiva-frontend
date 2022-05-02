@@ -56,6 +56,7 @@ export class CrearReservaComponent implements OnInit {
       return this.reservaService.consultar();
     })).subscribe(datos => {
       this.reservaService.enviarCambioReserva(datos);
+      this.reservaService.enviarMensajeCambio('Su reserva ha sido creada correctamente')
       this.formReserva.reset();
       this.dialogRef.close(true);
 
@@ -67,6 +68,7 @@ export class CrearReservaComponent implements OnInit {
       return this.reservaService.consultar();
     })).subscribe(datos => {
       this.reservaService.enviarCambioReserva(datos);
+      this.reservaService.enviarMensajeCambio('Su reserva ha sido actualizada correctamente')
       this.formReserva.reset();
       this.dialogRef.close(true);
 

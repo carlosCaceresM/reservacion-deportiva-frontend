@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CrearReservaComponent } from './components/crear-reserva/crear-reserva.component';
 import { CoreModule } from '@core/core.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatCardModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [ReservaService, CanchaService]
 })

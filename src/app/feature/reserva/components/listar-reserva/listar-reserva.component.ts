@@ -16,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ListarReservaComponent implements OnInit {
 
-  public displayedColumns: string[] = ['id', 'nombreUsuario', 'fecha', 'horasReservadas', 'valorPagar', 'cancha', 'acciones'];
+  public displayedColumns: string[] = ['id', 'nombreUsuario', 'fecha', 'hora', 'horasReservadas', 'valorPagar', 'cancha', 'acciones'];
   public dataSource: MatTableDataSource<DtoReserva>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,6 +51,7 @@ export class ListarReservaComponent implements OnInit {
         }))
         .subscribe(data =>{
           this.reservaService.enviarCambioReserva(data);
+          this.reservaService.enviarMensajeCambio('Su reserva ha sido eliminada correctamente')
         })
       }
     })
@@ -70,6 +71,7 @@ export class ListarReservaComponent implements OnInit {
         }))
         .subscribe(data =>{
           this.reservaService.enviarCambioReserva(data);
+          this.reservaService.enviarMensajeCambio('Su reserva ha sido cancelada correctamente')
         })
       }
     })

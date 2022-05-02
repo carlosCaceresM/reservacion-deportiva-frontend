@@ -11,6 +11,7 @@ import { DtoReserva } from './../model/reserva';
 export class ReservaService {
 
   private reservaCambio: Subject<DtoReserva[]> = new Subject<DtoReserva[]>();
+  private mensajeCambio: Subject<string> = new Subject<string>();
 
   private path = `${environment.endpoint}/reservas`;
 
@@ -53,5 +54,13 @@ export class ReservaService {
 
   public enviarCambioReserva(lista: DtoReserva[]) {
     this.reservaCambio.next(lista);
+  }
+
+  public enviarMensajeCambio(mensaje: string) {
+    this.mensajeCambio.next(mensaje);
+  }
+
+  public obtenerMensajeCambio() {
+    return this.mensajeCambio.asObservable();
   }
 }
