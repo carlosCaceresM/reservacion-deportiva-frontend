@@ -17,7 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class ListarReservaComponent implements OnInit {
 
   public displayedColumns: string[] = ['id', 'nombreUsuario', 'fecha', 'hora', 'horasReservadas', 'valorPagar', 'cancha', 'acciones'];
-  public dataSource: MatTableDataSource<DtoReserva>;
+  public datos: MatTableDataSource<DtoReserva>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
