@@ -1,3 +1,5 @@
+import { TrmService } from './shared/service/trm.service';
+import { Trm } from './shared/model/trm';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,10 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-
-  constructor() { }
+  public titulo: String = 'Taza de Cambio Representativa del Mercado';
+  public trm: Trm;
+  constructor(
+    private trmService: TrmService
+  ) { }
 
   ngOnInit() {
+    this.consultarTrm();
   }
 
+  private consultarTrm(){
+    this.trmService.consultar().subscribe(trm =>{
+      this.trm = trm;
+      console.log(this.trm);
+    })
+  }
 }

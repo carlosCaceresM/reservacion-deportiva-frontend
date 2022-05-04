@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -5,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ModalComponent } from '@core/components/modal/modal.component';
 import { HttpService } from '@core/services/http.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { of, throwError } from 'rxjs';
 
 import { ReservaService } from '../../shared/service/reserva.service';
 import { DtoReserva } from './../../shared/model/reserva';
@@ -17,8 +17,6 @@ describe('ListarReservaComponent', () => {
   let reservaService: ReservaService;
   let ngbModal:NgbModal;
   let modalRef:NgbModalRef;
-
-  let spyReservaServiceConsultar: jasmine.Spy;
 
   let reservas: DtoReserva[] = [
     {
@@ -51,7 +49,7 @@ describe('ListarReservaComponent', () => {
     component = fixture.componentInstance;
     reservaService = TestBed.inject(ReservaService);
     ngbModal = TestBed.inject(NgbModal);
-    spyReservaServiceConsultar = spyOn(reservaService, 'consultar').and.returnValue(of(reservas));
+    spyOn(reservaService, 'consultar').and.returnValue(of(reservas));
     spyOn(reservaService, 'eliminar').and.returnValue(of(null));
 
     fixture.detectChanges();
@@ -68,19 +66,6 @@ describe('ListarReservaComponent', () => {
     expect(1).toBeGreaterThanOrEqual(component.listaReservas.length);
     expect(reservas).toBe(component.listaReservas);
   });
-
-  it('deberia fallar al listar las reservas', async () => {
-    const error = 'error';
-    spyReservaServiceConsultar.and.returnValue(throwError(error));
-
-    reservaService.consultar().subscribe(
-      ()=>{},
-      (err)=>expect(error).toEqual(err)
-    );
-    component['listarReservas']();
-    expect(reservaService.consultar).toHaveBeenCalled();
-  });
-
 
   it('ejecuta el modal y lo acepta para eliminar la reserva', async () => {
     const resuelve = true;

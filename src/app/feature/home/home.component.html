@@ -1,1 +1,20 @@
-<p>home works!</p>
+<div class="card">
+  <h5 class="card-header text-center">{{titulo}}</h5>
+  <div class="card-body">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item flex-fill">
+          DOLAR <strong>{{trm.value | currency}} {{trm.unit}}</strong>
+
+      </li>
+      <li class="list-group-item">
+          <strong>{{trm.validityTo | date :'dd-MM-YYYY HH:mm:ss'}}</strong>
+      </li>
+      <li class="list-group-item">
+          <strong>{{trm.validityFrom | date :'dd-MM-YYYY HH:mm:ss'}}</strong>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
