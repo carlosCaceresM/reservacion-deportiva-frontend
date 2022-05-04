@@ -1,13 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
-import { ReservaService } from '../../shared/service/reserva.service';
-import { DtoReserva, Reserva } from './../../shared/model/reserva';
-import { CrearReservaComponent } from './../crear-reserva/crear-reserva.component';
-import { ModalConfirmarComponent } from './../../../../core/components/modal-confirmar/modal-confirmar.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DtoReserva } from '../../shared/model/reserva';
+import { ModalComponent } from './../../../../core/components/modal/modal.component';
+import { ReservaService } from './../../shared/service/reserva.service';
 
 @Component({
   selector: 'app-listar-reserva',
@@ -16,91 +11,52 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ListarReservaComponent implements OnInit {
 
-  public displayedColumns: string[] = ['id', 'nombreUsuario', 'fecha', 'hora', 'horasReservadas', 'valorPagar', 'cancha', 'acciones'];
-  public datos: MatTableDataSource<DtoReserva>;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  public confirmacionEliminar = '¿Desea eliminar la reserva?'
+  public confirmacionCancelar = '¿Desea Cancelar la reserva?'
+  public titulo: string = 'Reservas';
+  public encabezadoTabla: string[] = ['id', 'nombreUsuario', 'fecha', 'hora', 'horasReservadas', 'valorPagar', 'cancha', 'acciones'];
 
   constructor(
-    private reservaService: ReservaService,
-    public dialog: MatDialog,
+    private reservasService: ReservaService,
+    private modalService: NgbModal,
   ) { }
 
+  listaReservas: DtoReserva[] = [];
+
   ngOnInit(): void {
-    this.consultarReservas();
-    this.obtenerCambioReserva();
+    this.listarReservas();
 
   }
 
-  public filtrar(valor: string) {
-    this.datos.filter = valor.trim().toLowerCase();
+  private listarReservas() {
+    this.reservasService.consultar().subscribe(datos => {
+      this.listaReservas = datos;
+    })
   }
 
-  public eliminar(reserva: Reserva){
-    let dialogRef = this.dialog.open(ModalConfirmarComponent,{
-      disableClose: true,
-      height : "200px",
-      width: "300px",
+  public eventoEliminarReserva(reserva: DtoReserva) {
+    const refConfirmacion = this.modalService.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    refConfirmacion.componentInstance.mensaje = this.confirmacionEliminar;
 
-    });
-    dialogRef.afterClosed().subscribe(res =>{
-      if(res){
-        this.reservaService.eliminar(reserva).pipe(switchMap(()=>{
-          return this.reservaService.consultar();
-        }))
-        .subscribe(data =>{
-          this.reservaService.enviarCambioReserva(data);
-          this.reservaService.enviarMensajeCambio('Su reserva ha sido eliminada correctamente')
+    refConfirmacion.result.then((value: boolean) => {
+      if (value) {
+        this.reservasService.eliminar(reserva.id).subscribe(() => {
+          this.listarReservas();
         })
       }
-    })
+    });
   }
 
-  public cancelarReserva(reserva: Reserva){
-    let dialogRef = this.dialog.open(ModalConfirmarComponent,{
-      disableClose: true,
-      height : "200px",
-      width: "300px",
+  public cancelarReserva(reserva: DtoReserva) {
+    const refConfirmacion = this.modalService.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    refConfirmacion.componentInstance.mensaje = this.confirmacionCancelar;
 
-    });
-    dialogRef.afterClosed().subscribe(res =>{
-      if(res){
-        this.reservaService.cancelarReserva(reserva).pipe(switchMap(()=>{
-          return this.reservaService.consultar();
-        }))
-        .subscribe(data =>{
-          this.reservaService.enviarCambioReserva(data);
-          this.reservaService.enviarMensajeCambio('Su reserva ha sido cancelada correctamente')
+    refConfirmacion.result.then((value: boolean) => {
+      if (value) {
+        this.reservasService.cancelarReserva(reserva).subscribe(() => {
+          this.listarReservas();
         })
       }
-    })
-  }
-
-  private consultarReservas(reservas?: any) {
-    this.reservaService.consultar().subscribe(datos => {
-      reservas = datos;
-      this.datos = new MatTableDataSource(reservas);
-      this.datos.paginator = this.paginator;
-      this.datos.sort = this.sort;
     });
   }
-
-  private obtenerCambioReserva() {
-    this.reservaService.obtenerCambioReserva().subscribe((datos) => {
-      this.consultarReservas(datos);
-    });
-  }
-
-  public abrirModal(id?: number) {
-    this.dialog.open(CrearReservaComponent, {
-      disableClose: true,
-      height: '400px',
-      width: '500px',
-      data: {
-        id: id
-      },
-    })
-  }
-
 }

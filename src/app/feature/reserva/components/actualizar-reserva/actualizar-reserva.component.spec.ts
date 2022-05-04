@@ -1,20 +1,20 @@
 // import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import { ReservaComponent } from './reserva.component';
+// import { ActualizarReservaComponent } from './actualizar-reserva.component';
 
-// describe('ReservaComponent', () => {
-//   let component: ReservaComponent;
-//   let fixture: ComponentFixture<ReservaComponent>;
+// describe('ActualizarReservaComponent', () => {
+//   let component: ActualizarReservaComponent;
+//   let fixture: ComponentFixture<ActualizarReservaComponent>;
 
 //   beforeEach(async () => {
 //     await TestBed.configureTestingModule({
-//       declarations: [ ReservaComponent ]
+//       declarations: [ ActualizarReservaComponent ]
 //     })
 //     .compileComponents();
 //   });
 
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(ReservaComponent);
+//     fixture = TestBed.createComponent(ActualizarReservaComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
 //   });

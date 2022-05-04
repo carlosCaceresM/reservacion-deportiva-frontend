@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-sm-12 col-md-10">
-      <form [formGroup]="formReserva" (ngSubmit)="crearReserva()" id="formCrearReserva">
+      <form [formGroup]="formReserva" (ngSubmit)="actualizarReserva()" id="formCrearReserva">
         <div class="card my-5">
           <div class="card-header text-center">
             <h1>{{titulo}}</h1>
@@ -9,6 +9,13 @@
           <div class="card-body">
 
             <div class="row">
+
+              <div class="col-sm-6" [hidden]="true">
+                <div class="form-floating mb-3">
+                  <input formControlName="id" class="form-control" id="id">
+                  <label class="responsive" for="id">ID</label>
+                </div>
+              </div>
 
               <div class="col-sm-6">
                 <div class="form-floating mb-3">
@@ -93,7 +100,7 @@
               </div>
             </div>
             <div class="card-footer text-center" *ngIf="formReserva.valid">
-              <button class="btn btn-success" type="submit" aria-label="Crear reserva">Crear reserva</button>
+              <button class="btn btn-success" type="submit" aria-label="Crear reserva"> Actualizar</button>
           </div>
           </div>
         </div>

@@ -11,8 +11,8 @@ export class CanchaService {
 
   constructor(protected http: HttpService) { }
 
-  public consultarPorTipoCancha(id: number) {
-    return this.http.doGet<DtoCancha[]>(`${environment.endpoint}/canchas/tipo/${id}`,
+  public consultarPorTipoCancha(idCncha: number) {
+    return this.http.doGet<DtoCancha[]>(`${environment.endpoint}/canchas/tipo/${idCncha}`,
       this.http.optsName('consultar Canchas por tipo'));
   }
 }

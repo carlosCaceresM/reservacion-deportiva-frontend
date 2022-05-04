@@ -2,14 +2,14 @@ export class Reserva {
 
   id: number;
   nombreUsuario: string;
-  fecha: any;
+  fecha: string;
   horasReservadas: number;
   valorPagar: number;
   estado: boolean;
   idCancha: number;
 
-  constructor(id: number, nombreUsuario: string, fecha: any,
-    horasReservadas: number, valorPagar: number, idCancha: number
+  constructor(nombreUsuario: string, fecha: any,
+    horasReservadas: number, valorPagar: number, idCancha: number, id?: number
   ) {
     this.id = id;
     this.nombreUsuario = nombreUsuario;

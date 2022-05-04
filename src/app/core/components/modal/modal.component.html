@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <h2 class="modal-title">{{titulo}}</h2>
+</div>
+<div class="modal-body text-center">
+  {{mensaje}}
+</div>
+<div class="modal-footer text-center">
+  <button type="button" class="btn btn-success" (click)="cerrarModal(true)" id="btnAceptarCrearReserva">Aceptar</button>
+  <button type="button" class="btn btn-danger" (click)="cerrarModal(false)" >Cancelar</button>
+</div>

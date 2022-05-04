@@ -1,92 +1,113 @@
-import { DtoReserva } from './../../shared/model/reserva';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ModalComponent } from '@core/components/modal/modal.component';
 import { HttpService } from '@core/services/http.service';
-import { of } from 'rxjs';
-import { ReservaService } from '../../shared/service/reserva.service';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { of, throwError } from 'rxjs';
 
+import { ReservaService } from '../../shared/service/reserva.service';
+import { DtoReserva } from './../../shared/model/reserva';
 import { ListarReservaComponent } from './listar-reserva.component';
-import { ModalConfirmarComponent } from '@core/components/modal-confirmar/modal-confirmar.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ListarReservaComponent', () => {
   let component: ListarReservaComponent;
   let fixture: ComponentFixture<ListarReservaComponent>;
   let reservaService: ReservaService;
-  let dialog: MatDialog;
+  let ngbModal:NgbModal;
+  let modalRef:NgbModalRef;
 
-  let listaReservas: DtoReserva[] = [
+  let spyReservaServiceConsultar: jasmine.Spy;
+
+  let reservas: DtoReserva[] = [
     {
       id: 1,
-      nombreUsuario: 'hiko1',
-      fecha: '2022-5-22 20:22:33',
+      nombreUsuario: 'Hiko',
+      fecha: '2022-07-15 18:00:00',
       horasReservadas: 2,
-      valorPagar: 70000,
+      valorPagar: 60000,
       estado: true,
-      cancha: 'cancha 1'
-    },
-    {
-      id: 2,
-      nombreUsuario: 'hiko2',
-      fecha: '2022-05-22 20:22:33',
-      horasReservadas: 2,
-      valorPagar: 70000,
-      estado: true,
-      cancha: 'cancha 1'
-    }
-  ]
+      cancha: 'Cancha 1'
+     }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ListarReservaComponent],
+  ];
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ListarReservaComponent ],
       imports: [
         CommonModule,
         HttpClientModule,
         RouterTestingModule,
-        MatDialogModule,
-        BrowserAnimationsModule
       ],
-      providers: [
-        ReservaService,
-        HttpService,
-        MatDialog,
-        ModalConfirmarComponent
-      ]
+      providers: [ReservaService, HttpService,  NgbModal, NgbActiveModal, ModalComponent],
     })
-      .compileComponents();
-  });
+    .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ListarReservaComponent);
-    reservaService = TestBed.inject(ReservaService);
-    dialog = TestBed.inject(MatDialog);
     component = fixture.componentInstance;
-    spyOn(reservaService, 'consultar').and.returnValue(of(listaReservas));
+    reservaService = TestBed.inject(ReservaService);
+    ngbModal = TestBed.inject(NgbModal);
+    spyReservaServiceConsultar = spyOn(reservaService, 'consultar').and.returnValue(of(reservas));
     spyOn(reservaService, 'eliminar').and.returnValue(of(null));
-    spyOn(reservaService, 'cancelarReserva').and.returnValue(of(null));
-
 
     fixture.detectChanges();
   });
 
-  it('Deberia crear el componente ListarRerservaComponent', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('ejecuta el modal y elimina la reserva', async () => {
-    // arrange
-    // const respuesta =true;
-    let dialogRef = dialog.open(ModalConfirmarComponent, {
-      disableClose: true,
-      height: "200px",
-      width: "300px",
-    });
-    spyOn(dialog,'open').and.returnValue(dialogRef);
-    expect(dialogRef).toBe(dialogRef);
+  it('deberia listar las reservas', () => {
+    component['listarReservas']();
+
+    expect(reservaService.consultar).toHaveBeenCalled();
+    expect(1).toBeGreaterThanOrEqual(component.listaReservas.length);
+    expect(reservas).toBe(component.listaReservas);
   });
 
+  it('deberia fallar al listar las reservas', async () => {
+    const error = 'error';
+    spyReservaServiceConsultar.and.returnValue(throwError(error));
+
+    reservaService.consultar().subscribe(
+      ()=>{},
+      (err)=>expect(error).toEqual(err)
+    );
+    component['listarReservas']();
+    expect(reservaService.consultar).toHaveBeenCalled();
+  });
+
+
+  it('ejecuta el modal y lo acepta para eliminar la reserva', async () => {
+    const resuelve = true;
+    modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    spyOn(ngbModal,'open').and.returnValue(modalRef);
+
+    component.eventoEliminarReserva(component.listaReservas[0]);
+    modalRef.close(resuelve);
+    modalRef.result = new Promise((resolve) => {resolve(resuelve)});
+
+    await modalRef.result.then(
+      (res:boolean) =>{expect(resuelve).toBe(res)}
+    )
+  });
+
+  it('ejecuta el modal y lo cancela para no eliminar la reserva', async () => {
+    const resuelve = false;
+    modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    spyOn(ngbModal,'open').and.returnValue(modalRef);
+
+    component.eventoEliminarReserva(component.listaReservas[0]);
+    modalRef.close(resuelve);
+    modalRef.result = new Promise((resolve) => {resolve(resuelve)});
+
+    await modalRef.result.then(
+      (res:boolean) =>{expect(resuelve).toBe(res)}
+    )
+  });
 
 });

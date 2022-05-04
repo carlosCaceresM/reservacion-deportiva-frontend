@@ -1,21 +1,25 @@
-import { CrearReservaComponent } from './components/crear-reserva/crear-reserva.component';
+import { ActualizarReservaComponent } from './components/actualizar-reserva/actualizar-reserva.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ReservaComponent } from './components/reserva/reserva.component';
+import { CrearReservaComponent } from './components/crear-reserva/crear-reserva.component';
+import { ListarReservaComponent } from './components/listar-reserva/listar-reserva.component';
 
 const routes: Routes = [
   {
-
-      path: '',
-      children: [
-        {
-          path: '',
-          component: ReservaComponent,
-        },
-        {
-          path: 'crear',
-          component: CrearReservaComponent
-        },
+    path: '',
+    children: [
+      {
+        path: '',
+        component: ListarReservaComponent,
+      },
+      {
+        path: 'crear',
+        component: CrearReservaComponent
+      },
+      {
+        path: 'actualizar/:id',
+        component: ActualizarReservaComponent
+      }
     ]
   }
 ];

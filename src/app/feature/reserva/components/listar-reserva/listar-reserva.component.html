@@ -1,74 +1,47 @@
-<div class="mat-elevation-z8 container">
-
-  <h1>Reservas</h1>
-
-  <mat-form-field>
-    <mat-label>Buscar Reserva</mat-label>
-    <input matInput matInput (keyup)="filtrar($event.target.value)" placeholder="Buscar..." #input>
-  </mat-form-field>
-
-  <table mat-table [dataSource]="datos">
-
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="nombreUsuario">
-      <th mat-header-cell *matHeaderCellDef> Usuario </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.nombreUsuario}} </td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef> Fecha </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.fecha | date:'dd-MM-y'}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="hora">
-      <th mat-header-cell *matHeaderCellDef> Hora </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.fecha | date:'HH:mm'}} </td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="horasReservadas">
-      <th mat-header-cell *matHeaderCellDef> Horas Reservadas </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.horasReservadas}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="valorPagar">
-      <th mat-header-cell *matHeaderCellDef>Valor Pagar </th>
-      <td mat-cell *matCellDef="let reserva"> COP {{reserva.valorPagar}} </td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="cancha">
-      <th mat-header-cell *matHeaderCellDef> Cancha </th>
-      <td mat-cell *matCellDef="let reserva"> {{reserva.cancha}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones</th>
-      <td mat-cell *matCellDef="let reserva">
-
-        <button mat-raised-button color="primary" (click)="abrirModal(reserva.id)">
-          Editar
-        </button>
-
-        <button  mat-raised-button color="warn" (click)="eliminar(reserva)">
-          Eliminar
-        </button>
-
-        <button mat-raised-button color="accent" (click)="cancelarReserva(reserva)">
-          Cancelar
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card shadow my-5 text-center ">
+      <div class="card-header ">
+        <h1>{{titulo}}</h1>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-stripped  align-middle">
+            <caption>{{titulo}}</caption>
+            <thead class="table-dark">
+              <tr>
+                <th *ngFor="let e of encabezadoTabla">{{e}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reserva of listaReservas">
+                <td>{{reserva.id}}</td>
+                <td>{{reserva.nombreUsuario}}</td>
+                <td>{{reserva.fecha | date:'dd-MM-yyyy'}}</td>
+                <td>{{reserva.fecha | date:'hh:mm'}} pm</td>
+                <td>{{reserva.horasReservadas}}</td>
+                <td>{{reserva.valorPagar | currency}}</td>
+                <td>{{reserva.cancha}}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="Opciones reserva">
+                    <button class="btn btn-danger" aria-label="Eliminar reserva" (click)="eventoEliminarReserva(reserva)" [id]="'botonEliminarReserva'">
+                      Eliminar
+                    </button>
+                    <a class="btn btn-primary" aria-label="Actualizar reserva" [routerLink]="['/reserva/actualizar',reserva.id]"
+                      [id]="'linkActualizarReserva'">Actualizar</a>
+                    <button class="btn btn-success" aria-label="Eliminar reserva" (click)="cancelarReserva(reserva)" [id]="'botonCancelarReserva'">
+                      Cancelar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="btn btn-success my-2" [routerLink]="['/reserva/crear']" id="linkCrearReserva">Agregar</a>
+      </div>
+    </div>
+  </div>
 </div>

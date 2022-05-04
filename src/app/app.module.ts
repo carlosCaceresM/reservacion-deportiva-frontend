@@ -7,7 +7,6 @@ import { HomeComponent } from '@home/home.component';
 import { ProductoModule } from '@producto/producto.module';
 import { CoreModule } from '@core/core.module';
 import { CookieService } from 'ngx-cookie-service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -21,8 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     ProductoModule,
-    CoreModule,
-    BrowserAnimationsModule
+    CoreModule
   ],
   providers: [CookieService],
     bootstrap: [AppComponent],

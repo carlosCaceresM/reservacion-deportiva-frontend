@@ -1,20 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { environment } from '../../../environments/environment';
 import { HTTP_ERRORES_CODIGO } from './http-codigo-error';
 
 @Injectable()
 export class ManejadorError implements ErrorHandler {
-  constructor(
-    private snackBar: MatSnackBar
-  ) {}
+  constructor() {}
 
   handleError(error: string | Error): void {
     const mensajeError = this.mensajePorDefecto(error);
     this.imprimirErrorConsola(mensajeError);
-    this.montrarMensaje(mensajeError);
   }
 
   private mensajePorDefecto(error) {
@@ -30,19 +25,14 @@ export class ManejadorError implements ErrorHandler {
   }
 
   private imprimirErrorConsola(mensaje): void {
-    let prueba: string = mensaje.error.mensaje;
     const respuesta = {
       fecha: new Date().toLocaleString(),
       path: window.location.href,
-      prueba,
+      mensaje,
     };
     if (!environment.production) {
       window.console.error('Error inesperado:\n', respuesta);
     }
-  }
-
-  private montrarMensaje(mensaje): void {
-    this.snackBar.open(mensaje.error.mensaje, 'ERROR', { duration: 5000 });
   }
 
   public obtenerErrorHttpCode(httpCode: number): string {
