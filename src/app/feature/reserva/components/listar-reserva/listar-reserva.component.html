@@ -24,7 +24,7 @@
                 <td>{{reserva.cancha}}</td>
                 <td>
                   <div class="btn-group" role="group" aria-label="Opciones reserva">
-                    <button class="btn btn-danger" aria-label="Eliminar reserva" (click)="eventoEliminarReserva(reserva)" [id]="'botonEliminarReserva'">
+                    <button class="btn btn-danger" aria-label="Eliminar reserva" (click)="eliminarReserva(reserva)" [id]="'botonEliminarReserva'">
                       Eliminar
                     </button>
                     <a class="btn btn-primary" aria-label="Actualizar reserva" [routerLink]="['/reserva/actualizar',reserva.id]"

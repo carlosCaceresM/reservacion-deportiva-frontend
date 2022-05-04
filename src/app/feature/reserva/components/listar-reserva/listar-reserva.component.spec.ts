@@ -87,7 +87,7 @@ describe('ListarReservaComponent', () => {
     modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
     spyOn(ngbModal,'open').and.returnValue(modalRef);
 
-    component.eventoEliminarReserva(component.listaReservas[0]);
+    component.eliminarReserva(component.listaReservas[0]);
     modalRef.close(resuelve);
     modalRef.result = new Promise((resolve) => {resolve(resuelve)});
 
@@ -101,12 +101,40 @@ describe('ListarReservaComponent', () => {
     modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
     spyOn(ngbModal,'open').and.returnValue(modalRef);
 
-    component.eventoEliminarReserva(component.listaReservas[0]);
+    component.eliminarReserva(component.listaReservas[0]);
     modalRef.close(resuelve);
     modalRef.result = new Promise((resolve) => {resolve(resuelve)});
 
     await modalRef.result.then(
       (res:boolean) =>{expect(resuelve).toBe(res)}
+    )
+  });
+
+  it('ejecuta el modal y lo acepta para Cancelar la reserva', async () => {
+    const respuesta = true;
+    modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    spyOn(ngbModal,'open').and.returnValue(modalRef);
+
+    component.cancelarReserva(component.listaReservas[0]);
+    modalRef.close(respuesta);
+    modalRef.result = new Promise((resolve) => {resolve(respuesta)});
+
+    await modalRef.result.then(
+      (res:boolean) =>{expect(respuesta).toBe(res)}
+    )
+  });
+
+  it('ejecuta el modal y no Cancela la reserva', async () => {
+    const respuesta = false;
+    modalRef = ngbModal.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
+    spyOn(ngbModal,'open').and.returnValue(modalRef);
+
+    component.cancelarReserva(component.listaReservas[0]);
+    modalRef.close(respuesta);
+    modalRef.result = new Promise((resolve) => {resolve(respuesta)});
+
+    await modalRef.result.then(
+      (res:boolean) =>{expect(respuesta).toBe(res)}
     )
   });
 

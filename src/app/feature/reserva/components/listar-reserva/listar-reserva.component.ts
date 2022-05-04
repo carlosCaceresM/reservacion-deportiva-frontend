@@ -34,7 +34,7 @@ export class ListarReservaComponent implements OnInit {
     })
   }
 
-  public eventoEliminarReserva(reserva: DtoReserva) {
+  public eliminarReserva(reserva: DtoReserva) {
     const refConfirmacion = this.modalService.open(ModalComponent, { animation: true, backdrop: 'static', keyboard: false });
     refConfirmacion.componentInstance.mensaje = this.confirmacionEliminar;
 
